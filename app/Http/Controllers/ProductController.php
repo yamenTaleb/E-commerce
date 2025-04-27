@@ -2,26 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $products = Product::with('productImages')
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            })
+            ->when($request->input('category_slug'), function ($query, $categorySlug) {
+                $query->whereHas('category', function ($q) use ($categorySlug) {
+                    $q->where('slug', $categorySlug); // Fetch category by slug
+                });
+            })
+            ->when($request->input('price'), function ($query, $price) {
+                $query->where('price', '<=', $price);
+            })
+            ->paginate(15);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Apiresponse::sendResponse(200, 'products retrieved successfully.', ProductResource::collection($products));
     }
 
     /**
@@ -37,7 +47,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return ApiResponse::sendResponse(200, 'product retrieved successfully.', new ProductResource($product));
     }
 
     /**
