@@ -22,6 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('/products', ProductController::class);
-Route::get('/product-by-slug/{product:slug}', [ProductController::class, 'show'])->name('product.show');
+Route::resource('/products', ProductController::class)->except(['edit', 'create']);
+
 require __DIR__.'/auth.php';

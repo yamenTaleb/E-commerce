@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price');
             $table->integer('stock_quantity');
-            $table->integer('rating');
-            $table->decimal('discount');
+            $table->integer('rating')->default(0);
+            $table->decimal('discount')->nullable();
             $table->timestamps();
         });
     }

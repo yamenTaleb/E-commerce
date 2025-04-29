@@ -21,7 +21,6 @@ class Product extends Model
         'image',
         'category_id',
         'stock_quantity',
-        'rating',
     ];
 
     public function reviews(): HasMany

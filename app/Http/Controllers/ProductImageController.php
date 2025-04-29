@@ -27,9 +27,18 @@ class ProductImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductImageRequest $request)
+    public function store($image, $product_id)
     {
-        //
+        if (filter_var($image['name'], FILTER_VALIDATE_URL))
+            $imageName = $image['name'];
+        else
+            $imageName = storeImage($image['name'], 'products');
+
+        ProductImage::create([
+            'product_id' => $product_id,
+            'name' => $imageName,
+            'is_primary' => $image['is_primary'],
+        ]);
     }
 
     /**

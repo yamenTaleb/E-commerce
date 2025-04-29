@@ -16,7 +16,8 @@ class ImageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image_url' => $this->name ? url('storage/products' . $this->name) : null,
+            'image_url' => filter_var($this->name, FILTER_VALIDATE_URL)?
+                    $this->name : url('storage/products' . $this->name),
             'is_primary' => $this->is_primary
         ];
     }

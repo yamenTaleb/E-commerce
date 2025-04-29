@@ -7,6 +7,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -39,7 +40,21 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $product = Product::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'category_id' => $data['category_id'],
+            'stock_quantity' => $data['stock_quantity'],
+        ]);
+
+        foreach ($data['images'] as $image) {
+            (new ProductImageController())->store($image, $product->id);
+        }
+
+        return Apiresponse::sendResponse(201, 'Product created successfully.', new ProductResource($product));
     }
 
     /**
@@ -48,14 +63,6 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return ApiResponse::sendResponse(200, 'product retrieved successfully.', new ProductResource($product));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
     }
 
     /**
