@@ -29,15 +29,15 @@ class ProductPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Product $product): bool
+    public function update(User $user): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**

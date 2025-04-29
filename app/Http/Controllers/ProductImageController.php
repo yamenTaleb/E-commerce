@@ -60,9 +60,25 @@ class ProductImageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductImageRequest $request, ProductImage $productImage)
+    public function update($image, $product_id)
     {
-        //
+        if (isset($image['id'])) {
+            $productImage = ProductImage::findOrFail($image['id']);
+
+            if (filter_var($image['name'], FILTER_VALIDATE_URL))
+                $imageName = $image['name'];
+            else {
+                deleteImage($productImage->name,'products');
+
+                $imageName = storeImage($image['name'], 'products');
+            }
+
+            $productImage->update([
+                'name' => $imageName,
+                'is_primary' => $image['is_primary'],
+            ]);
+        } else
+            $this->store($image, $product_id);
     }
 
     /**

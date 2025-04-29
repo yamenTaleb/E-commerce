@@ -70,7 +70,21 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $data = $request->validated();
+
+        $product->update([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'category_id' => $data['category_id'],
+            'stock_quantity' => $data['stock_quantity'],
+        ]);
+
+        foreach ($data['images'] as $image) {
+            (new ProductImageController())->update($image, $product->id);
+        }
+
+        return ApiResponse::sendResponse(200, 'Product updated successfully.', new ProductResource($product));
     }
 
     /**
