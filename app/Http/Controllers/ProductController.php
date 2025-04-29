@@ -51,7 +51,7 @@ class ProductController extends Controller
         ]);
 
         foreach ($data['images'] as $image) {
-            (new ProductImageController())->store($image, $product->id);
+            (new ProductImageController)->store($image, $product->id);
         }
 
         return Apiresponse::sendResponse(201, 'Product created successfully.', new ProductResource($product));
@@ -81,7 +81,7 @@ class ProductController extends Controller
         ]);
 
         foreach ($data['images'] as $image) {
-            (new ProductImageController())->update($image, $product->id);
+            (new ProductImageController)->update($image, $product->id);
         }
 
         return ApiResponse::sendResponse(200, 'Product updated successfully.', new ProductResource($product));
@@ -92,6 +92,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        (new ProductImageController)->destroy($product->id);
+
+        $product->delete();
+
+        return ApiResponse::sendResponse(200, 'Product deleted successfully.', null);
     }
 }

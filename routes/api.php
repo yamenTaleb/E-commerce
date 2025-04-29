@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('/products', ProductController::class)->except(['edit', 'create']);
+Route::resource('/products', ProductController::class)->except(['edit', 'create', 'destroy']);
+Route::delete('/products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete, App\Models\Product');
 
 require __DIR__.'/auth.php';

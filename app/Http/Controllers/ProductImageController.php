@@ -84,8 +84,12 @@ class ProductImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductImage $productImage)
+    public function destroy($product_id)
     {
-        //
+        $images = ProductImage::query()->where('product_id', $product_id)->get();
+
+        foreach ($images as $image) {
+            deleteImage($image->name,'products');
+        }
     }
 }
