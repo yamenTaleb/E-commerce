@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -24,5 +25,7 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/products', ProductController::class)->except(['edit', 'create', 'destroy']);
 Route::delete('/products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete, App\Models\Product');
+
+Route::resource('/reviews', ReviewController::class)->except(['edit', 'create']);
 
 require __DIR__.'/auth.php';

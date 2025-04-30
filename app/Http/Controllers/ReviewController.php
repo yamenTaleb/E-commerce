@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\review;
+use App\Helpers\ApiResponse;
+use App\Http\Resources\ReviewResource;
+use App\Models\Review;
 use App\Http\Requests\StorereviewRequest;
 use App\Http\Requests\UpdatereviewRequest;
+use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $reviews = review::with('user')
+            ->where('product_id', $request->input('product_id'))
+            ->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return ApiResponse::sendResponse(200, 'Reviews retrieved successfully', ReviewResource::collection($reviews));
     }
 
     /**
@@ -29,29 +28,22 @@ class ReviewController extends Controller
      */
     public function store(StorereviewRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(review $review)
-    {
-        //
-    }
+        $review = Review::create([
+            'product_id' => $data['product_id'],
+            'user_id' => $data['user_id'],
+            'rating' => $data['rating'],
+            'comment' => $data['comment'],
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(review $review)
-    {
-        //
+        return ApiResponse::sendResponse(200, 'Review created successfully', new ReviewResource($review));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatereviewRequest $request, review $review)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
         //
     }
@@ -59,7 +51,7 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(review $review)
+    public function destroy(Review $review)
     {
         //
     }
