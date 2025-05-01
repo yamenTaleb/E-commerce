@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Requests;
-
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReviewRequest extends FormRequest
@@ -11,7 +10,9 @@ class UpdateReviewRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $review = $this->route('review');
+
+        return $this->user()->can('update', $review);
     }
 
     /**
@@ -22,7 +23,8 @@ class UpdateReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'rating' => 'required|numeric|min:1|max:5',
+            'comment' => 'required|string|max:2048',
         ];
     }
 }

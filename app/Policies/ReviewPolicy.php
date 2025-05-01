@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\review;
+use App\Models\Review;
 use Illuminate\Auth\Access\Response;
 
 class ReviewPolicy
@@ -35,17 +35,22 @@ class ReviewPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, review $review): bool
+    public function update(User $user, Review $review): Response
     {
-        return false;
+        return $user->id === $review->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this review.');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, review $review): bool
+    public function delete(User $user, review $review): Response
     {
-        return false;
+        return ($user->id === $review->user_id
+            or $user->role === 'admin')
+            ? Response::allow()
+            : Response::deny('You do not own this review.');
     }
 
     /**

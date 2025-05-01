@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Http\Requests\StorereviewRequest;
 use App\Http\Requests\UpdatereviewRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ReviewController extends Controller
 {
@@ -45,7 +46,14 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, Review $review)
     {
-        //
+        $request->validated();
+
+        $review->update([
+            'rating' => $request->rating,
+             'comment' => $request->comment,
+        ]);
+
+        return ApiResponse::sendResponse(200, 'Review updated successfully', new ReviewResource($review));
     }
 
     /**
@@ -53,6 +61,10 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        Gate::authorize('delete', $review);
+
+        $review->delete();
+
+        return ApiResponse::sendResponse(200, 'Review deleted successfully', null);
     }
 }
