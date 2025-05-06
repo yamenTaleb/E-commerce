@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
@@ -27,5 +29,6 @@ Route::resource('/products', ProductController::class)->except(['edit', 'create'
 Route::delete('/products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete, App\Models\Product');
 
 Route::resource('/reviews', ReviewController::class)->except(['edit', 'create']);
+Route::resource('/cart', CartController::class)->except(['edit', 'create']);
 
 require __DIR__.'/auth.php';

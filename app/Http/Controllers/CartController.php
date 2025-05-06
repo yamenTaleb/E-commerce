@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
@@ -13,15 +15,14 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $cartItems = Cart::with('product:id,name,price,stock_quantity')
+            ->where('user_id', auth()->user()->id)
+            ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        if ($cartItems->isEmpty())
+            return ApiResponse::sendResponse(200, 'No items in your cart', null);
+
+        return ApiResponse::sendResponse(200, "cartItems retrieved successfully.", CartResource::collection($cartItems));
     }
 
     /**
@@ -29,23 +30,15 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
-        //
-    }
+       $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Cart $cart)
-    {
-        //
-    }
+      $cartItem = Cart::create([
+           'user_id' => $data['user_id'],
+           'product_id' => $data['product_id'],
+           'quantity' => $data['quantity'],
+       ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
-    {
-        //
+       return ApiResponse::sendResponse(201, 'Item added to cart successfully.', new CartResource($cartItem));
     }
 
     /**

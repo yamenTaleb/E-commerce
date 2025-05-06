@@ -27,7 +27,7 @@ class ReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorereviewRequest $request)
+    public function store(StoreReviewRequest $request)
     {
         $data = $request->validated();
 
@@ -50,7 +50,7 @@ class ReviewController extends Controller
 
         $review->update([
             'rating' => $request->rating,
-             'comment' => $request->comment,
+            'comment' => $request->comment,
         ]);
 
         return ApiResponse::sendResponse(200, 'Review updated successfully', new ReviewResource($review));

@@ -9,11 +9,12 @@ class StoreCartRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    protected function prepareForValidation()
     {
-        return false;
+        return $this->merge([
+           'user_id' => auth()->user()->id
+        ]);
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +23,9 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => 'required|integer|exists:users,id',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
         ];
     }
 }
