@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
@@ -13,7 +15,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::with('childrenCategories')
+                        ->whereNull('category_parent_id')
+                        ->orderBy('name')
+                        ->get();
+
+        return ApiResponse::sendResponse(200, 'Categories retrieved successfully.', CategoryResource::collection($categories));
     }
 
     /**
