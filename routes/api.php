@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -25,10 +26,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('/products', ProductController::class)->except(['edit', 'create', 'destroy']);
+Route::apiResource('/products', ProductController::class)->except('destroy');
 Route::delete('/products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete, App\Models\Product');
 
-Route::resource('/reviews', ReviewController::class)->except(['edit', 'create']);
-Route::resource('/cart', CartController::class)->except(['edit', 'create']);
+Route::apiResource('/reviews', ReviewController::class);
+Route::apiResource('/cart', CartController::class)->except(['show', 'update', 'destroy']);
+Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
+
+Route::apiResource('/categories', CategoryController::class);
 
 require __DIR__.'/auth.php';

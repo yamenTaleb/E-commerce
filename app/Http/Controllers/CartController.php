@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Http\Requests\DestroyCartRequest;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class CartController extends Controller
 {
@@ -44,16 +48,44 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCartRequest $request, Cart $cart)
+    public function update(UpdateCartRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data = $data['updates'];
+        $cartItems = [];
+
+        DB::transaction(function () use ($data, &$cartItems) {
+            foreach ($data as $item) {
+
+                Cart::query()
+                    ->where('id', $item['id'])
+                    ->update([
+                    'quantity' => $item['quantity'],
+                ]);
+
+                $cartItems[] = Cart::findOrFail($item['id']);
+            }
+        });
+
+        return ApiResponse::sendResponse(201, 'Cart items updated successfully.', CartResource::collection($cartItems));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cart $cart)
+    public function destroy(DestroyCartRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        DB::transaction(function () use ($data) {
+            foreach ($data['array_of_ids'] as $id) {
+
+                $cartItem = Cart::findOrFail($id);
+
+                $cartItem->delete();
+            }
+        });
+
+        return ApiResponse::sendResponse(200, 'Cart items deleted successfully.', null);
     }
 }

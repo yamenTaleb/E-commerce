@@ -2,9 +2,11 @@
 
 namespace App\Policies;
 
+use App\Helpers\ApiResponse;
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Http\JsonResponse;
 
 class CartPolicy
 {
@@ -37,7 +39,7 @@ class CartPolicy
      */
     public function update(User $user, Cart $cart): bool
     {
-        return false;
+        return $user->id === $cart->user_id;
     }
 
     /**
@@ -45,7 +47,7 @@ class CartPolicy
      */
     public function delete(User $user, Cart $cart): bool
     {
-        return false;
+        return $user->id === $cart->user_id;
     }
 
     /**

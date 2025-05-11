@@ -3,23 +3,21 @@
 namespace App\Http\Requests;
 
 use App\Models\Cart;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateCartRequest extends FormRequest
+class DestroyCartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        foreach ($this->input('updates') as $update) {
-                $cart = Cart::findOrFail($update['id']);
+        foreach ($this->input('array_of_ids') as $id) {
+            $cart = Cart::findOrFail($id);
 
-                if (Auth::user()->cannot('update', $cart))
-                    return false;
+            if (Auth::user()->cannot('delete', $cart))
+                return false;
         }
 
         return true;
@@ -33,9 +31,8 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'updates' => 'required|array|max:100',
-            'updates.*.id' => 'required|exists:carts,id',
-            'updates.*.quantity' => 'required|integer|min:1',
+            'array_of_ids' => 'required|array',
+            'array_of_ids.*' => 'required|integer|exists:carts,id'
         ];
     }
 }
