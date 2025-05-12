@@ -19,6 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'description' => $this->faker->text(),
             'category_parent_id' => $this->faker->randomElement([4, 5, 6, 7, null]),
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -11,7 +12,9 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        $category = $this->route('category');
+
+        return Auth::user()->can('update', $category);
     }
 
     /**
@@ -22,7 +25,9 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:2048',
+            'category_parent_id' => 'integer|exists:categories,id|nullable',
         ];
     }
 }

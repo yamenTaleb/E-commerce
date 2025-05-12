@@ -15,6 +15,8 @@ class Category extends Model
 
     protected $fillable = [
         'name',
+        'description',
+        'category_parent_id',
     ];
 
     public function products(): HasMany
@@ -25,6 +27,11 @@ class Category extends Model
     public function childrenCategories(): HasMany
     {
         return $this->hasMany(Category::class, 'category_parent_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     public function getSlugOptions() : SlugOptions
