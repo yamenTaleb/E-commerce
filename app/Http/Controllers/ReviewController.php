@@ -21,7 +21,10 @@ class ReviewController extends Controller
             ->where('product_id', $request->input('product_id'))
             ->paginate(10);
 
-        return ApiResponse::sendResponse(200, 'Reviews retrieved successfully', ReviewResource::collection($reviews));
+        return ApiResponse::sendResponse(200, 'Reviews retrieved successfully', [
+            'records' => ReviewResource::collection($reviews),
+            'meta' => pagination_links($reviews)
+        ]);
     }
 
     /**

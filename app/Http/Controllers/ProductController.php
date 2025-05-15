@@ -32,7 +32,10 @@ class ProductController extends Controller
             })
             ->paginate(15);
 
-        return Apiresponse::sendResponse(200, 'products retrieved successfully.', ProductResource::collection($products));
+        return Apiresponse::sendResponse(200, 'products retrieved successfully.', [
+            'records' => ProductResource::collection($products),
+            'meta' => pagination_links($products),
+        ]);
     }
 
     /**

@@ -31,7 +31,8 @@
     "autoload": {
         "files": [
             "app/Helpers/ApiResponse.php",
-            "app/Helpers/image.php"
+            "app/Helpers/image.php",
+            "app/Helpers/pagination.php"
         ],
         "psr-4": {
             "App\\": "app/",
