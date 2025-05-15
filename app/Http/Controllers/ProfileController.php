@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\UserDTO;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
@@ -12,18 +13,24 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function update(ProfileUpdateRequest $request)
+    public function update(ProfileUpdateRequest $request, UserDTO $userDTO)
     {
-        $request->user()->fill($request->validated());
+        $userDTO = UserDTO::fromRequest($request);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        $imageName = storeImage($request->file('image')?? null, 'users');
-        $request['image'] = $imageName;
+        $imageName = storeImage($userDTO->file('image')?? null, 'users');
+        $userDTO->image = $imageName;
 
-        $request->user()->save();
+        $request->user()->update(array_filter([
+            'name' => $userDTO->name,
+            'email' => $userDTO->email,
+            'phone' => $userDTO->phone,
+            'address' => $userDTO->address,
+            'image' => $userDTO->image,
+        ]));
 
         return ApiResponse::sendResponse(200, 'Profile updated successfully.', ['user' => $request->user()]);
     }

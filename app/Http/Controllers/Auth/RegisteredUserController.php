@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTOs\UserDTO;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -19,7 +20,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request, UserDTO $userDTO)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -29,12 +30,14 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $userDTO = UserDTO::fromRequest($request);
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->string('password')),
+            'name' => $userDTO->name,
+            'email' => $userDTO->email,
+            'address' => $userDTO->address,
+            'phone' => $userDTO->phone,
+            'password' => Hash::make($userDTO->string('password')),
         ]);
 
         event(new Registered($user));
