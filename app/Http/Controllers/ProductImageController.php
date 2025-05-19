@@ -68,17 +68,31 @@ class ProductImageController extends Controller
             if (filter_var($image['name'], FILTER_VALIDATE_URL))
                 $imageName = $image['name'];
             else {
-                deleteImage($productImage->name,'products');
+                deleteImage($productImage->name, 'products');
 
                 $imageName = storeImage($image['name'], 'products');
             }
+        } else {
+            if (filter_var($image['name'], FILTER_VALIDATE_URL))
+                $imageName = $image['name'];
+            else
+                $imageName = storeImage($image['name'], 'products');
+        }
 
-            $productImage->update([
-                'name' => $imageName,
-                'is_primary' => $image['is_primary'],
-            ]);
-        } else
-            $this->store($image, $product_id);
+        // If this image is set as primary, update others
+        if ($image['is_primary']) {
+            ProductImage::query()
+                ->where('product_id', $product_id)
+                ->update(['is_primary' => false]);
+        }
+
+        ProductImage::updateOrCreate([
+            'id' => $image['id'],
+        ],[
+            'product_id' => $product_id,
+            'name' => $imageName,
+            'is_primary' => $image['is_primary'],
+        ]);
     }
 
     /**
