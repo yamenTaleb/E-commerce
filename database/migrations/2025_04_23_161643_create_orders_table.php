@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('status')->default('pending');
+            $table->string('session_id');
             $table->timestamp('order_date');
         });
     }
