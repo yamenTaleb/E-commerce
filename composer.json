@@ -14,7 +14,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "mcamara/laravel-localization": "^2.3",
-        "spatie/laravel-sluggable": "^3.7"
+        "spatie/laravel-sluggable": "^3.7",
+        "stripe/stripe-php": "^17.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",

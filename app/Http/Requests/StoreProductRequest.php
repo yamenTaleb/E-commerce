@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Product;
+use App\Rules\OnePrimaryImageRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
@@ -26,6 +27,7 @@ class StoreProductRequest extends FormRequest
             'name' => 'bail|required|unique:products|string|max:255',
             'description' => 'bail|required',
             'price' => 'bail|required|numeric',
+            'images' => new OnePrimaryImageRule,
             'images.*.name' => 'bail|required|url',
             'images.*.is_primary' => 'boolean',
             'category_id' => 'bail|required|integer|exists:categories,id',

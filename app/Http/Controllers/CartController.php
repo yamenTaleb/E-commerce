@@ -8,6 +8,7 @@ use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -19,9 +20,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cartItems = Cart::with('product:id,name,price,stock_quantity')
-            ->where('user_id', auth()->user()->id)
-            ->get();
+        $cartItems = CartService::cartItems();
 
         if ($cartItems->isEmpty())
             return ApiResponse::sendResponse(200, 'No items in your cart', null);

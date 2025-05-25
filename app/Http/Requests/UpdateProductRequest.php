@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Product;
+use App\Rules\OnePrimaryImageRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -30,6 +31,7 @@ class UpdateProductRequest extends FormRequest
             'price' => 'numeric',
             'stock_quantity' => 'bail|integer|min:1',
             'category_id' => 'integer|exists:categories,id',
+            'images' => new OnePrimaryImageRule,
             'images.*.id' => 'present',
             'images.*.name' =>  'url',
             'images.*.is_primary' => 'boolean',

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
@@ -35,5 +36,10 @@ Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.upda
 Route::delete('/cart/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
 
 Route::apiResource('/categories', CategoryController::class);
+
+Route::post('/payments/checkout', [PaymentController::class, 'checkout'])->name('payments.checkout');
+Route::get('/payments/success', [PaymentController::class, 'success'])->name('payments.success');
+Route::get('/payments/cancel', [PaymentController::class, 'cancel'])->name('payments.cancel');
+Route::post('/payments/webhook', [PaymentController::class, 'webhook'])->name('payments.webhook');
 
 require __DIR__.'/auth.php';
