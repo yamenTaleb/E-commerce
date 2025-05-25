@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./LoginRegister.css";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
-
 const LoginRegister = () => {
   const [action, setAction] = useState("");
 
