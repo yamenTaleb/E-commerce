@@ -12,9 +12,17 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Request;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use App\Services\StripeWebhookService;
 
 class PaymentController extends Controller
 {
+    protected $stripeWebhookService;
+
+    public function __construct(StripeWebhookService $stripeWebhookService)
+    {
+        $this->stripeWebhookService = $stripeWebhookService;
+    }
+
     public function checkout(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -97,5 +105,31 @@ class PaymentController extends Controller
 //        }
 
         return ApiResponse::sendResponse(200, 'Payment cancelled');
+    }
+
+    public function webhook(Request $request)
+    {
+        $endpoint_secret = env('STRIPE_WEBHOOK_SECRET');
+
+        $payload = $request->getContent();
+        $sig_header = $request->header('Stripe-Signature');
+
+        try {
+            $event = \Stripe\Webhook::constructEvent(
+                $payload, $sig_header, $endpoint_secret
+            );
+        } catch (\UnexpectedValueException $e) {
+            return response('', 400);
+        } catch (\Stripe\Exception\SignatureVerificationException $e) {
+            return response('', 400);
+        }
+
+        // Handle the event
+        match ($event->type) {
+            'checkout.session.completed' => $this->stripeWebhookService->handleCheckoutSessionCompleted($event->data->object),
+            default => "Received unknown event type {$event->type}",
+        };
+
+        return response('OK', 200);
     }
 }

@@ -40,5 +40,6 @@ Route::apiResource('/categories', CategoryController::class);
 Route::post('/payments/checkout', [PaymentController::class, 'checkout'])->name('payments.checkout');
 Route::get('/payments/success', [PaymentController::class, 'success'])->name('payments.success');
 Route::get('/payments/cancel', [PaymentController::class, 'cancel'])->name('payments.cancel');
+Route::post('/payments/webhook', [PaymentController::class, 'webhook'])->name('payments.webhook');
 
 require __DIR__.'/auth.php';
