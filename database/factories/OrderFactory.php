@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,21 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $orderDate = $this->faker->dateTimeBetween('now', '+1 year');
+
         return [
-            //
+            'user_id' => User::factory(),
+            'order_date' => $orderDate,
+            'status' => $this->faker->randomElement([
+                'pending',
+                'paid',
+                'shipped',
+                'delivered',
+                'canceled',
+                'refunded',
+            ]),
+            'session_id' => 'sess_' . $this->faker->uuid,
+            'total' => $this->faker->numberBetween(2, 999),
         ];
     }
 }
