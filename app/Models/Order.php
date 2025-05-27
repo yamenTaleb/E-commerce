@@ -17,6 +17,12 @@ class Order extends Model
         'user_id',
         'order_date',
         'status',
+        'session_id',
+        'total'
+    ];
+
+    protected $casts = [
+        'expires_at' => 'datetime',
     ];
 
     public $timestamps = false;

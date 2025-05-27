@@ -18,6 +18,8 @@ class Payment extends Model
         'payment_amount',
     ];
 
+    public $timestamps = false;
+
     function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

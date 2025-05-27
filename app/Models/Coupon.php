@@ -15,4 +15,10 @@ class Coupon extends Model
         'expires_at',
         'discount_amount',
     ];
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
+
+    public $timestamps = false;
 }

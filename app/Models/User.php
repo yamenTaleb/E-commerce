@@ -70,7 +70,7 @@ class User extends Authenticatable
     // A user has many issues for customer support
     public function issues(): HasMany
     {
-        return $this->hasMany(CustomerSupport::class);
+        return $this->hasMany(CustomerSupport::class, 'customer_id');
     }
 
     // A user has many wishlist items

@@ -18,8 +18,19 @@ class CustomerSupport extends Model
         'status',
     ];
 
+    public $timestamps = false;
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }
