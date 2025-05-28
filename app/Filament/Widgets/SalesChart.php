@@ -9,14 +9,14 @@ use Filament\Widgets\ChartWidget;
 class SalesChart extends ChartWidget
 {
     protected static ?string $heading = 'Monthly Sales';
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 1;
     protected static ?string $pollingInterval = '60s';
     protected static bool $isLazy = true;
     protected int | string | array $columnSpan = [
         'md' => 1,
         'xl' => 1,
     ];
-    
+
     protected function getColumns(): int
     {
         return 1;

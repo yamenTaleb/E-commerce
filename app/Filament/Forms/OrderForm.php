@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Enums\OrderStatusEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -34,13 +35,14 @@ class OrderForm
 
             Select::make('status')
                 ->options([
-                    'paid' => 'Paid',
-                    'unpaid' => 'Unpaid',
-                    'canceled' => 'Canceled',
-                    'shipped' => 'Shipped',
-                    'refunded' => 'Refunded',
-                    'delivered' => 'Delivered',
-                    'processing' => 'Processing'
+                    'paid' => OrderStatusEnum::PAID->label(),
+                    'unpaid' => OrderStatusEnum::UNPAID->label(),
+                    'cancelled' => OrderStatusEnum::CANCELED->label(),
+                    'shipped' => OrderStatusEnum::SHIPPED->label(),
+                    'pending' => OrderStatusEnum::PENDING->label(),
+                    'refunded' => OrderStatusEnum::REFUNDED->label(),
+                    'delivered' => OrderStatusEnum::DELIVERED->label(),
+                    'processing' => OrderStatusEnum::PROCESSING->label(),
                 ])
                 ->required()
                 ->label('Status'),

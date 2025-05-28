@@ -3,10 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Exports\WishListExporter;
-use App\Filament\Resources\WishListResource\Forms\WishListForm;
 use App\Filament\Resources\WishListResource\Pages;
 use App\Filament\Resources\WishListResource\RelationManagers;
 use App\Filament\Resources\WishListResource\Tables\WishListColumns;
+use App\Filament\Resources\WishListResource\WishListForm;
 use App\Models\WishList;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

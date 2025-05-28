@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -41,10 +42,12 @@ class LatestOrders extends BaseWidget
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'pending', 'shipped' => 'warning',
-                        'delivered', 'paid' => 'success',
-                        'cancelled', 'refunded', 'unpaid' => 'danger',
-                        default => 'gray',
+                        OrderStatusEnum::SHIPPED->value => OrderStatusEnum::SHIPPED->color(),
+                        OrderStatusEnum::DELIVERED->value, OrderStatusEnum::PAID->value => OrderStatusEnum::PAID->color(),
+                        OrderStatusEnum::CANCELED->value, OrderStatusEnum::REFUNDED->value => OrderStatusEnum::REFUNDED->color(),
+                        OrderStatusEnum::UNPAID->value, OrderStatusEnum::PROCESSING->value, OrderStatusEnum::PENDING => OrderStatusEnum::UNPAID->color(),
+                        default => 'gray'
+
                     }),
 
                 Tables\Columns\TextColumn::make('total')
@@ -53,6 +56,7 @@ class LatestOrders extends BaseWidget
             ->actions([
                 Tables\Actions\Action::make('view')
                     ->url(fn (Order $record): string => route('filament.admin.resources.orders.view', $record))
+                    ->color('gray')
                     ->icon('heroicon-o-eye'),
             ]);
     }

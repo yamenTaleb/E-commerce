@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,12 +24,12 @@ class OrderFactory extends Factory
             'user_id' => User::factory(),
             'order_date' => $orderDate,
             'status' => $this->faker->randomElement([
-                'pending',
-                'paid',
-                'shipped',
-                'delivered',
-                'canceled',
-                'refunded',
+                OrderStatusEnum::PENDING->value,
+                OrderStatusEnum::PAID->value,
+                OrderStatusEnum::SHIPPED->value,
+                OrderStatusEnum::DELIVERED->value,
+                OrderStatusEnum::CANCELED->value,
+                OrderStatusEnum::REFUNDED->value,
             ]),
             'session_id' => 'sess_' . $this->faker->uuid,
             'total' => $this->faker->numberBetween(2, 999),

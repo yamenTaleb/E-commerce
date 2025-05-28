@@ -2,6 +2,7 @@
 
 namespace App\Filament\Filters;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\Filter;
@@ -17,14 +18,14 @@ class OrderFilter
            SelectFilter::make('status')
                ->label('Status')
                ->options([
-                   'paid' => 'Paid',
-                   'unpaid' => 'Unpaid',
-                   'cancelled' => 'Cancelled',
-                   'shipped' => 'Shipped',
-                   'pending' => 'Pending',
-                   'processing' => 'Processing',
-                   'refunded' => 'Refunded',
-                   'delivered' => 'Delivered',
+                   'paid' => OrderStatusEnum::PAID->label(),
+                   'unpaid' => OrderStatusEnum::UNPAID->label(),
+                   'cancelled' => OrderStatusEnum::CANCELED->label(),
+                   'shipped' => OrderStatusEnum::SHIPPED->label(),
+                   'pending' => OrderStatusEnum::PENDING->label(),
+                   'refunded' => OrderStatusEnum::REFUNDED->label(),
+                   'delivered' => OrderStatusEnum::DELIVERED->label(),
+                   'processing' => OrderStatusEnum::PROCESSING->label(),
                ])
                ->searchable()
                ->preload()

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Tables;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\shipment;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -48,10 +49,10 @@ class ShipmentTable
             IconColumn::make('shipment_status')
                 ->label('Status')
                 ->icon(fn (string $state): string => match ($state) {
-                    'pending' => 'heroicon-o-clock',
-                    'shipped' => 'heroicon-o-truck',
-                    'in_transit' => 'heroicon-o-arrow-path',
-                    'delivered' => 'heroicon-o-check-circle',
+                    OrderStatusEnum::CANCELED->value => 'heroicon-o-x-circle',
+                    OrderStatusEnum::SHIPPED->value => 'heroicon-o-truck',
+                    OrderStatusEnum::PROCESSING->value => 'heroicon-o-arrow-path',
+                    OrderStatusEnum::DELIVERED->value => 'heroicon-o-check-circle',
                     default => 'heroicon-o-question-mark-circle',
                 })
                 ->color(fn (string $state): string => match ($state) {

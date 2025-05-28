@@ -1,26 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CategroyResource\RelationManagers;
+namespace App\Filament\Resources\CategoryResource\RelationManagers;
 
-use App\Filament\Filters\DateRangeFilter;
-use App\Filament\Filters\NumberRangeFilter;
 use App\Filament\Filters\ProductFilter;
 use App\Filament\Forms\ProductForm;
 use App\Filament\Tables\ProductTable;
-use App\Models\Product;
-use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
-use Filament\Tables\Columns\Layout\Grid;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\DB;
 
 class ProductsRelationManager extends RelationManager
 {

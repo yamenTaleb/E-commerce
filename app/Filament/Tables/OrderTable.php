@@ -2,6 +2,7 @@
 
 namespace App\Filament\Tables;
 
+use App\Enums\OrderStatusEnum;
 use Filament\Tables\Columns\TextColumn;
 use function Livewire\wrap;
 
@@ -29,10 +30,11 @@ class OrderTable
             TextColumn::make('status')
                 ->badge()
                 ->color(fn ($record) => match ($record->status) {
-                    'canceled' => 'danger',
-                    'paid', 'shipped', 'delivered' => 'success',
-                    'unpaid', 'refunded', 'pending' => 'warning',
-                    'processing' => 'info'
+                    OrderStatusEnum::SHIPPED->value => OrderStatusEnum::SHIPPED->color(),
+                    OrderStatusEnum::DELIVERED->value, OrderStatusEnum::PAID->value => OrderStatusEnum::PAID->color(),
+                    OrderStatusEnum::CANCELED->value, OrderStatusEnum::REFUNDED->value => OrderStatusEnum::REFUNDED->color(),
+                    OrderStatusEnum::UNPAID->value, OrderStatusEnum::PROCESSING->value, OrderStatusEnum::PENDING => OrderStatusEnum::UNPAID->color(),
+                    default => 'gray'
                 }),
 
             TextColumn::make('total')

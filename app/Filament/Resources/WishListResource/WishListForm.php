@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\WishListResource\Forms;
+namespace App\Filament\Resources\WishListResource;
 
 use Filament\Forms;
 use Filament\Forms\Form;

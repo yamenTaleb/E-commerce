@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Enums\OrderStatusEnum;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
@@ -30,9 +31,9 @@ class ShipmentForm
                                 ->label('Status')
                                 ->required()
                                 ->options([
-                                    'shipped' => 'Shipped',
-                                    'delivered' => 'Delivered',
-                                    'cancelled' => 'Cancelled',
+                                    'shipped' => OrderStatusEnum::SHIPPED->label(),
+                                    'delivered' => OrderStatusEnum::DELIVERED->label(),
+                                    'canceled' => OrderStatusEnum::CANCELED->label(),
                                 ])
                                 ->default('shipped'),
                         ]),
