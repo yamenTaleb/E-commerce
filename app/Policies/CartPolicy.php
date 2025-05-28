@@ -15,7 +15,7 @@ class CartPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class CartPolicy
      */
     public function view(User $user, Cart $cart): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -31,7 +31,7 @@ class CartPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -55,7 +55,7 @@ class CartPolicy
      */
     public function restore(User $user, Cart $cart): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -63,6 +63,6 @@ class CartPolicy
      */
     public function forceDelete(User $user, Cart $cart): bool
     {
-        return false;
+        return true;
     }
 }
