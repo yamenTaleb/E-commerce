@@ -31,8 +31,8 @@ class LatestOrders extends BaseWidget
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Customer')
-                    ->searchable(),
-//                    ->url(fn (Order $record): string => route('filament.admin.resources.users.view', $record->user_id)),
+                    ->searchable()
+                    ->url(fn (Order $record): string => route('filament.admin.resources.users.view', $record->user_id)),
 
                 Tables\Columns\TextColumn::make('order_date')
                     ->dateTime()
@@ -49,11 +49,11 @@ class LatestOrders extends BaseWidget
 
                 Tables\Columns\TextColumn::make('total')
                     ->label('Total')
+            ])
+            ->actions([
+                Tables\Actions\Action::make('view')
+                    ->url(fn (Order $record): string => route('filament.admin.resources.orders.view', $record))
+                    ->icon('heroicon-o-eye'),
             ]);
-//            ->actions([
-//                Tables\Actions\Action::make('view')
-//                    ->url(fn (Order $record): string => route('filament.admin.resources.orders.view', $record))
-//                    ->icon('heroicon-o-eye'),
-//            ]);
     }
 }
