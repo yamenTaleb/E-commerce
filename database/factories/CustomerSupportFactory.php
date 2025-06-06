@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,11 @@ class CustomerSupportFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'customer_id' => User::factory(),
+            'product_id' => Product::factory(),
+            'subject' => fake()->sentence(3),
+            'description' => fake()->paragraph(),
+            'status' => fake()->randomElement(['pending', 'considered', 'solved'])
         ];
     }
 }

@@ -17,8 +17,9 @@ class Order extends Model
         'user_id',
         'status',
         'total_price',
+        'order_date',
         'order_update',
-        'order_date'
+        'session_id'
     ];
 
     public $timestamps = false;

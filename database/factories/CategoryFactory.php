@@ -20,7 +20,9 @@ class CategoryFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
-            'category_parent_id' => $this->faker->randomElement([4, 5, 6, 7, null]),
+            // run this for the first time then run the below line and comment this line
+            'category_parent_id' => null,
+//            'category_parent_id' => $this->faker->randomElement(Category::all()->pluck('id')->toArray()),
         ];
     }
 }

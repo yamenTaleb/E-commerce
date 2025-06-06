@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('customer_supports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('users');
-            $table->string('category_issued');
+            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->string('subject')->nullable();
             $table->text('description');
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->timestamp('created_at')->useCurrent();
         });
     }

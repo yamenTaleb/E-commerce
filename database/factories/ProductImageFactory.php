@@ -18,7 +18,7 @@ class ProductImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => $this->faker->numberBetween(10, 20),
+            'product_id' => Product::factory(),
             'name' => $this->faker->imageUrl(),
             'is_primary' => $this->faker->boolean(),
         ];

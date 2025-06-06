@@ -13,7 +13,7 @@ class ShipmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ShipmentPolicy
      */
     public function view(User $user, shipment $shipment): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class ShipmentPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class ShipmentPolicy
      */
     public function update(User $user, shipment $shipment): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class ShipmentPolicy
      */
     public function delete(User $user, shipment $shipment): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class ShipmentPolicy
      */
     public function restore(User $user, shipment $shipment): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class ShipmentPolicy
      */
     public function forceDelete(User $user, shipment $shipment): bool
     {
-        return false;
+        return true;
     }
 }

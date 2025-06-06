@@ -18,6 +18,9 @@ return new class extends Migration
             $table->decimal('total_price', 13, 2)->default(0.00);
             $table->datetime('order_date');
             $table->datetime('order_update')->nullable();
+            $table->string('session_id')->nullable();
+
+
         });
     }
 

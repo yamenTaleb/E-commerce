@@ -128,11 +128,11 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         if(auth()->user()->can('delete', $order)){
-            $order->delete();
             $ordersdetails=OrderDetail::where('order_id',$order->id)->get;
             foreach ($ordersdetails as $orderdetail){
                 $orderdetail->delete();
             }
+            $order->delete();
             return ApiResponse::sendResponse(200,'Order deleted successfully',[]);
         }
         return ApiResponse::sendResponse(403,'You are not authorized to delete this order',[]);

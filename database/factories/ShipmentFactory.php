@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatusEnum;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,14 @@ class ShipmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'order_id' => Order::factory(),
+            'shipment_date' => fake()->dateTimeBetween('-1 year', '-1 month'),
+            'delivery_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
+            'shipment_status' => fake()->randomElement([
+                OrderStatusEnum::CANCELED,
+                OrderStatusEnum::DELIVERED,
+                OrderStatusEnum::SHIPPED
+            ]),
         ];
     }
 }

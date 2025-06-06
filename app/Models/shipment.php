@@ -17,6 +17,13 @@ class shipment extends Model
         'shipment_status',
     ];
 
+    public $timestamps = false;
+
+    protected $casts = [
+        'shipment_date' => 'datetime',
+        'delivery_date' => 'datetime',
+    ];
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

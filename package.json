@@ -1,4 +1,5 @@
 {
+
   "name": "e-commerce",
   "version": "1.0.0",
   "description": "Welcome to **Fashion**, the ultimate online destination for trendy clothing that speaks your style! From chic essentials to bold statement pieces, we’ve got you covered. Our e-commerce store is built to bring fashion closer to you, one click at a time.",
@@ -20,4 +21,23 @@
     "url": "https://github.com/yamenTaleb/E-commerce/issues"
   },
   "homepage": "https://github.com/yamenTaleb/E-commerce#readme"
+
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/typography": "^0.5.16",
+        "autoprefixer": "^10.4.21",
+        "axios": "^1.6.4",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.5.3",
+        "postcss-nesting": "^13.0.1",
+        "tailwindcss": "^3.4.17",
+        "vite": "^6.3.5"
+    }
+
 }
