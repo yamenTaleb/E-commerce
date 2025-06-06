@@ -13,7 +13,7 @@ class OrderDetailPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role =='admin' ;
     }
 
     /**
@@ -21,7 +21,7 @@ class OrderDetailPolicy
      */
     public function view(User $user, OrderDetail $orderDetail): bool
     {
-        return false;
+        return $orderDetail->order->user_id==$user->id;
     }
 
     /**
@@ -29,7 +29,7 @@ class OrderDetailPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class OrderDetailPolicy
      */
     public function delete(User $user, OrderDetail $orderDetail): bool
     {
-        return false;
+        return $orderDetail->order->user_id==$user->id;
     }
 
     /**

@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('status')->default('pending');
-            $table->string('session_id');
-            $table->timestamp('order_date');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('status')->default('unpaid');
+            $table->decimal('total_price', 13, 2)->default(0.00);
+            $table->datetime('order_date');
+            $table->datetime('order_update')->nullable();
         });
     }
 

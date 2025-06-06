@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrderRequest extends FormRequest
@@ -11,9 +12,15 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', Order::class);
     }
 
+    protected function prepareForValidation()
+    {
+        return $this->merge([
+            'user_id' => auth()->user()->id,
+        ]);
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +29,10 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => 'required|integer|exists:users,id',
+           'status'=> 'sometimes|in:paid,unpaid',
+
+
         ];
     }
 }

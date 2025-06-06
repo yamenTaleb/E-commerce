@@ -1,0 +1,23 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "Welcome to **Fashion**, the ultimate online destination for trendy clothing that speaks your style! From chic essentials to bold statement pieces, we’ve got you covered. Our e-commerce store is built to bring fashion closer to you, one click at a time.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yamenTaleb/E-commerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yamenTaleb/E-commerce/issues"
+  },
+  "homepage": "https://github.com/yamenTaleb/E-commerce#readme"
+}

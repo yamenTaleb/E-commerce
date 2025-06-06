@@ -15,8 +15,10 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'order_date',
         'status',
+        'total_price',
+        'order_update',
+        'order_date'
     ];
 
     public $timestamps = false;

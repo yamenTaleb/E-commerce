@@ -9,4 +9,20 @@ class OrderDetail extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderDetailFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'order_id',
+        'product_id',
+        'quantity',
+        'unit_price',
+        'total_price'
+    ];
+    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

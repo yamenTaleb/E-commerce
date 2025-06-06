@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Helpers\ApiResponse;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartService
 {
@@ -17,4 +20,6 @@ class CartService
 
         return $cartItems;
     }
+
+
 }

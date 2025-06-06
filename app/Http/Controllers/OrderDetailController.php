@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Http\Resources\OrderDetailResource;
 use App\Models\OrderDetail;
-use App\Http\Requests\StoreOrderDetailRequest;
-use App\Http\Requests\UpdateOrderDetailRequest;
+use Illuminate\Http\Request;
 
 class OrderDetailController extends Controller
 {
@@ -13,23 +14,42 @@ class OrderDetailController extends Controller
      */
     public function index()
     {
-        //
-    }
+        if(auth()->user()->can('viewAny'))
+        {
+            $ordersdetails = OrderDetail::with(['order:id,user_id,status,total_price,order_date, order_update','product:name'])->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+            return ApiResponse::sendResponse(200,'All orders details retrived successfully',
+                [
+                    'order_details'=>OrderDetailResource::collection($ordersdetails),
+                    'meta' => pagination_links($ordersdetails),
+                ]);
+        }
+
+            $ordersdetails = OrderDetail::whereHas('order', function($query){
+                $query->where('user_id',auth()->id());
+            })->with(['order:id,user_id,status,total_price,order_date,order_update',
+                'product:name'])
+                ->paginate(10);
+
+            foreach($ordersdetails as $ordersdetail){
+                if( auth()->user()->cannot('view',$ordersdetail))
+                    return ApiResponse::sendResponse(403,'You are not authorized to view orders details',[]);
+            }
+
+            return ApiResponse::sendResponse(200,'All orders details for you retrived successfully',
+                [
+                    'order_details'=>OrderDetailResource::collection($ordersdetails),
+                    'meta' => pagination_links($ordersdetails),
+                ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderDetailRequest $request)
+    public function store(Request $request)
     {
-        //
+
+
     }
 
     /**
@@ -37,29 +57,17 @@ class OrderDetailController extends Controller
      */
     public function show(OrderDetail $orderDetail)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(OrderDetail $orderDetail)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateOrderDetailRequest $request, OrderDetail $orderDetail)
-    {
-        //
+        if(auth()->user()->can('view', $orderDetail)){
+            $orderDetail->load(['order:id,user_id,status,total_price,order_date,order_update','product:name']);
+            return ApiResponse::sendResponse(200,' This order details retrived successfully',new OrderDetailResource($orderDetail) );
+        }
+        return ApiResponse::sendResponse(403,'You are not authorized to view order_details',[]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderDetail $orderDetail)
+    public function destroy(string $id)
     {
         //
     }
