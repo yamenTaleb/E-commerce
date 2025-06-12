@@ -18,7 +18,7 @@ class OrderDetail extends Model
         'unit_price',
         'total_price'
     ];
-    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }

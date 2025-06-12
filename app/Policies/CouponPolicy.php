@@ -13,15 +13,15 @@ class CouponPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Coupon $coupon): bool
+    public function view(User $user, ?Coupon $coupon): bool
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
@@ -29,38 +29,22 @@ class CouponPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Coupon $coupon): bool
+    public function update(User $user, ?Coupon $coupon): bool
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Coupon $coupon): bool
+    public function delete(User $user, ?Coupon $coupon): bool
     {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Coupon $coupon): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Coupon $coupon): bool
-    {
-        return true;
+        return $user->isAdmin();
     }
 }

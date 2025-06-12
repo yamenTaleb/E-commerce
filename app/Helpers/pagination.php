@@ -8,8 +8,10 @@ if (! function_exists('pagination_links')) {
            'current_page' => $records->currentPage(),
            'per_page' => $records->perPage(),
            'last_page' => $records->lastPage(),
+           'path' => $records->path(),
            'next_page_url' => $records->nextPageUrl(),
            'prev_page_url' => $records->previousPageUrl(),
+           'links' => $records->links(),
        ];
     }
 }

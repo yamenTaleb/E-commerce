@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
+use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
 use App\Http\Requests\StoreCouponRequest;
 use App\Http\Requests\UpdateCouponRequest;
+use App\Services\CouponService;
+use Illuminate\Support\Facades\Gate;
+use function Filament\authorize;
 
 class CouponController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(public CouponService $couponService)
     {
-        //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index()
     {
-        //
+        $coupons = $this->couponService->coupons();
+
+        return ApiResponse::sendResponse(200, 'Coupons retrieved successfully', [
+            'records' => CouponResource::collection($coupons),
+            'meta' => pagination_links($coupons)
+        ]);
     }
 
     /**
@@ -29,7 +32,11 @@ class CouponController extends Controller
      */
     public function store(StoreCouponRequest $request)
     {
-        //
+        $coupon = $request->validated();
+
+        $coupon = $this->couponService->store($coupon);
+
+        return ApiResponse::sendResponse(201, 'Coupon created successfully.', new CouponResource($coupon));
     }
 
     /**
@@ -37,15 +44,7 @@ class CouponController extends Controller
      */
     public function show(Coupon $coupon)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Coupon $coupon)
-    {
-        //
+        return ApiResponse::sendResponse(200, 'Coupon retrieved successfully.', new CouponResource($coupon));
     }
 
     /**
@@ -53,7 +52,11 @@ class CouponController extends Controller
      */
     public function update(UpdateCouponRequest $request, Coupon $coupon)
     {
-        //
+        $data = $request->validated();
+
+        $coupon = $this->couponService->update($coupon, $data);
+
+        return ApiResponse::sendResponse(200, 'Coupon updated successfully.', new CouponResource($coupon));
     }
 
     /**
@@ -61,6 +64,10 @@ class CouponController extends Controller
      */
     public function destroy(Coupon $coupon)
     {
-        //
+        Gate::authorize('delete', $coupon);
+
+        $coupon->delete();
+
+        return ApiResponse::sendResponse(200, 'Coupon deleted successfully.', null);
     }
 }

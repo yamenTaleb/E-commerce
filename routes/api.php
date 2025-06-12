@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PaymentController;
@@ -46,7 +47,6 @@ Route::post('/payments/webhook', [PaymentController::class, 'webhook'])->name('p
 Route::apiResource('/orders', OrderController::class);
 Route::apiResource('/order_details', OrderDetailController::class)->only('index', 'show');
 
-
-
+Route::apiResource('/coupons', CouponController::class);
 
 require __DIR__.'/auth.php';

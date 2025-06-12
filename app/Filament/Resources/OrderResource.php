@@ -35,6 +35,7 @@ class OrderResource extends Resource
             ->filters(OrderFilter::getFilters())
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->headerActions([
                 ExportAction::make()->exporter(OrderExporter::class),

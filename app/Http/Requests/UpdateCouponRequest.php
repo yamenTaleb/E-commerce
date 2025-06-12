@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Coupon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCouponRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateCouponRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('update', $this->coupon);
     }
 
     /**
@@ -22,7 +24,9 @@ class UpdateCouponRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'code' => ['required', 'string', 'max:255', Rule::unique('coupons', 'code')->ignore($this->route('coupon'))],
+            'discount_amount' => ['required', 'numeric', 'min:1', 'max:100'],
+            'expires_at' => ['required', 'date', 'after:now'],
         ];
     }
 }
