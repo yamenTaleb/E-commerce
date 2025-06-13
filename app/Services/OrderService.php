@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Services;
+use App\Http\Resources\OrderResource;
+use App\Models\Order;
 use Exception;
 use App\Helpers\ApiResponse;
 use App\Models\OrderDetail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -99,4 +102,12 @@ class OrderService
         return $carts;
     }
 
+    // admin all orders user all their orders
+    public function orders()
+    {
+        if (Auth::user()->can('viewAny', Order::class))
+            return Order::paginate(15);
+
+        return Order::where('user_id', Auth::user()->id)->paginate(15);
+    }
 }

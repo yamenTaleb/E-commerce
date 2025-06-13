@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class OrderResource extends JsonResource
 {
@@ -16,11 +17,10 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'order_status' => $this->status ?? 'unpaid',
-            'total_price'=>$this->total_price,
-            'order_date'=>$this->order_date,
-            'order_update'=>$this->order_update ?? 'null'
+            'status' => $this->status ?? 'unpaid',
+            'total'=> $this->total_price,
+            'order_date'=> Carbon::parse($this->order_date)->format('Y-m-d h:i a'),
+            'updated_at'=> Carbon::parse($this->order_update)->format('Y-m-d h:i a'),
         ];
     }
 }

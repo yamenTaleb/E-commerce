@@ -19,24 +19,24 @@ use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
+    public function __construct(public OrderService $orderService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       if(auth()->user()->can('viewAny'))
-       {
-           $orders = Order::get();
+        $orders = $this->orderService->orders();
 
-           return ApiResponse::sendResponse(200,'All orders retrived successfully',OrderResource::collection($orders));
-       }
-
-           $orders = Order::where('user_id',auth::user()->id)->get();
-
-             if ($orders->isEmpty())
+        if ($orders->isEmpty())
             return ApiResponse::sendResponse(200,'No orders found',[]);
 
-            return ApiResponse::sendResponse(200,'Your orders retrived successfully',OrderResource::collection($orders));
+        return ApiResponse::sendResponse(200,'Orders retrieved successfully.', [
+            'records' => OrderResource::collection($orders),
+            'meta' => pagination_links($orders),
+        ]);
     }
 
     /**
