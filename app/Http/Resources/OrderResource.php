@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
             'user_id' => $this->user_id,
             'total'=> $this->total_price,
             'order_date'=> Carbon::parse($this->order_date)->format('Y-m-d h:i a'),
-            'updated_at'=> Carbon::parse($this->order_update)->format('Y-m-d h:i a'),
+            'updated_at'=> $this->order_update ? Carbon::parse($this->order_update)->format('Y-m-d h:i a') : null,
         ];
     }
 }

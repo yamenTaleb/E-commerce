@@ -63,11 +63,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-      if(auth()->user()->can('view',$order)){
+        if (auth()->user()->can('view', $order))
+          return ApiResponse::sendResponse(200,'Order retrieved successfully', new OrderResource($order));
 
-          return ApiResponse::sendResponse(200,'Order retrived successfully',new OrderResource($order));
-      }
-          return ApiResponse::sendResponse(403,'You are not authorized to view this order',[]);
+        return ApiResponse::sendResponse(403,'You are not authorized to view this order', []);
     }
 
     /**
@@ -75,53 +74,22 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
+        $data = $request->only('status');
 
-        try{
+        $this->orderService->update($data['status'], $order);
 
-           $request->validated();
-         return DB::transaction(function() use($request,$order){
-             $user=auth()->user();
-             $carts=$user->cartItems()->with('product')->get;
-
-             if($carts->isEmpty())
-             {
-                 return ApiResponse::sendResponse(200,'you did not add any cart',[]);
-             }
-
-             $updateorder=$order->update([
-                 'user_id'=>$request->user_id,
-                 'order_update'=>now(),
-             ]);
-
-             $orderservice=new OrderService();
-             $totalprice= $orderservice->UpdateOrderDetails($user,$order);
-
-             $order->update(['total_price'=>$totalprice]);
-
-             return ApiResponse::sendResponse(200,'Order updated successfully',new OrderResource($updateorder));
-         });
-
-        }
-        catch (Exception $e){
-            $errorData=json_decode($e->getMessage(),true) ?? [];
-            return ApiResponse::sendResponse($e->getCode() ?? 422,$errorData['message'] ?? $e->getMessage(),$errorData['data'] ?? [] );
-        }
-
+        return ApiResponse::sendResponse(200,'Order updated successfully',new OrderResource($order));
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Order $order)
     {
-        if(auth()->user()->can('delete', $order)){
-            $ordersdetails=OrderDetail::where('order_id',$order->id)->get;
-            foreach ($ordersdetails as $orderdetail){
-                $orderdetail->delete();
-            }
-            $order->delete();
-            return ApiResponse::sendResponse(200,'Order deleted successfully',[]);
-        }
-        return ApiResponse::sendResponse(403,'You are not authorized to delete this order',[]);
+        Gate::authorize('delete', Order::class);
+
+        $order->delete();
+
+        return ApiResponse::sendResponse(200,'Order deleted successfully', []);
     }
 
 }

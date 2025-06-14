@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -15,12 +16,6 @@ class UpdateOrderRequest extends FormRequest
         return $this->user()->can('update', Order::class);
     }
 
-    protected function prepareForValidation()
-    {
-        return $this->merge([
-            'user_id' => auth()->user()->id,
-        ]);
-    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,10 +24,8 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer|exists:users,id',
-           'status'=> 'sometimes|in:paid,unpaid',
-
-
+           'status'=> 'sometimes|in:' . OrderStatusEnum::PENDING->value . ',' . OrderStatusEnum::DELIVERED->value . ',' . OrderStatusEnum::CANCELED->value . ',' . OrderStatusEnum::SHIPPED->value
+             . ',' . OrderStatusEnum::PAID->value . ',' . OrderStatusEnum::REFUNDED->value . ',' . OrderStatusEnum::UNPAID->value . ',' . OrderStatusEnum::PROCESSING->value,
         ];
     }
 }

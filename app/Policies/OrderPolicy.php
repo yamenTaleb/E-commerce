@@ -14,7 +14,7 @@ class OrderPolicy
     public function viewAny(User $user): bool
     {
 
-        return $user->role =='admin' ;
+        return $user->isAdmin();
 
     }
 
@@ -31,27 +31,23 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Order $order): bool
+    public function update(User $user): bool
     {
-
-        return $order->user_id==$user->id;
-
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Order $order): bool
+    public function delete(User $user): bool
     {
-
-        return $order->user_id==$user->id;
-
+        return $user->isAdmin();
     }
 
     /**
