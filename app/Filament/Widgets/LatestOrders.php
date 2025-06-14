@@ -50,7 +50,7 @@ class LatestOrders extends BaseWidget
 
                     }),
 
-                Tables\Columns\TextColumn::make('total')
+                Tables\Columns\TextColumn::make('total_price')
                     ->label('Total')
             ])
             ->actions([

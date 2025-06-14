@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Cart;
+use App\Rules\ValidCartQuantityRule;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -34,8 +35,13 @@ class UpdateCartRequest extends FormRequest
     {
         return [
             'updates' => 'required|array|max:100',
-            'updates.*.id' => 'required|exists:carts,id',
-            'updates.*.quantity' => 'required|integer|min:1',
+            'updates.*.id' => 'required',
+            'updates.*.quantity' => [
+                'required',
+                'integer',
+                'min:1',
+                new ValidCartQuantityRule(),
+            ],
         ];
     }
 }

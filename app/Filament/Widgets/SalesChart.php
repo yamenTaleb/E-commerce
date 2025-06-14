@@ -28,7 +28,7 @@ class SalesChart extends ChartWidget
         $salesData = DB::table('orders')
             ->select(
                 DB::raw('DATE_FORMAT(order_date, "%Y-%m") as month'),
-                DB::raw('SUM(total) as total')
+                DB::raw('SUM(total_price) as total')
             )
             ->where('status', ['paid', 'shipped', 'delivered'])
             ->whereYear('order_date', now()->year)

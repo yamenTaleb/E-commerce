@@ -19,7 +19,7 @@ class StatsOverview extends BaseWidget
         // Total Revenue
         $totalRevenue = DB::table('orders')
             ->whereIn('status', ['paid', 'shipped', 'delivered'])
-            ->sum('total');
+            ->sum('total_price');
 
         // New Orders (last 30 days)
         $newOrders = Order::where('order_date', '>=', now()->subDays(30))->count();
@@ -34,7 +34,7 @@ class StatsOverview extends BaseWidget
         $revenueData = DB::table('orders')
             ->select(
                 DB::raw('DATE(order_date) as date'),
-                DB::raw('SUM(total) as total')
+                DB::raw('SUM(total_price) as total')
             )
             ->whereIn('status', ['paid', 'shipped', 'delivered'])
             ->where('order_date', '>=', now()->subDays(7))

@@ -3,6 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Models\Order;
+use App\Rules\ValidCartQuantityRule;
+use App\Rules\ValidCouponRule;
+use App\Rules\ValidOrderQuantityRule;
+use App\Services\CartService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrderRequest extends FormRequest
@@ -17,8 +21,17 @@ class StoreOrderRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        $cartItems = CartService::cartItems()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'quantity' => $item->quantity,
+                'product_quantity' => $item->product->stock_quantity,
+                'product_name' => $item->product->name,
+            ];
+        })->toArray();
+
         return $this->merge([
-            'user_id' => auth()->user()->id,
+            'cartItems' => $cartItems,
         ]);
     }
     /**
@@ -29,7 +42,16 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer|exists:users,id',
+            'coupon' => [
+                'string',
+                'exists:coupons,code',
+                new ValidCouponRule,
+            ],
+            'cartItems' => [
+                'required',
+                'array',
+                new ValidOrderQuantityRule,
+            ],
         ];
     }
 }

@@ -27,16 +27,11 @@ class Coupon extends Model
         return $this->expires_at && $this->expires_at->isPast();
     }
 
-    public function isActive(): bool
-    {
-        return $this->is_active && !$this->isExpired();
-    }
-
     public static function exists(string $code): bool
     {
         $coupon = static::where('code', $code)->first();
 
-        return (bool)$coupon;
+        return (bool) $coupon;
     }
 
 }

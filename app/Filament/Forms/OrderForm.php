@@ -47,7 +47,7 @@ class OrderForm
                 ->required()
                 ->label('Status'),
 
-            TextInput::make('total')
+            TextInput::make('total_price')
                 ->required()
                 ->numeric()
                 ->step(1)

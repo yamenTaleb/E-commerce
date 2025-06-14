@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Services\CouponService;
 use Exception;
 use App\Helpers\ApiResponse;
 use App\Http\Requests\StoreOrderRequest;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
-    public function __construct(public OrderService $orderService)
+    public function __construct(public OrderService $orderService, public CartService $cartService)
     {
     }
 
@@ -42,34 +43,19 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request, CartService $cartService, CouponService $couponService)
     {
-        try{
-            $request->validated();
+        $order = null;
 
-            DB::transaction(function() use($request){
+        DB::transaction(function() use ($request, &$order) {
+            $order = $this->orderService->store($request);
 
-              $order=Order::create([
-               'user_id'=>$request->user_id,
-               'order_date'=>now(),
-               'order_update'=>null,
-               'total_price'=>0,
-               'status'=>'unpaid',
-              ]);
-              $user=auth()->user();
+            $this->orderService->storeOrderDetails($order);
 
-             $orderservice=new OrderService();
-             $totalprice= $orderservice->creatOrderDetailsWithReturnTotalPrice($user,$order);
-             $order->update(['total_price'=>$totalprice]);
+            $this->cartService->flush();
+        });
 
-             return ApiResponse::sendResponse(201,'Order created successfully',new OrderResource($order));
-            });
-        }
-        catch (Exception $e){
-            $errorData=json_decode($e->getMessage(),true) ?? [];
-            return ApiResponse::sendResponse($e->getCode() ?? 422,$errorData['message'] ?? $e->getMessage(),$errorData['data'] ?? [] );
-        }
-
+        return ApiResponse::sendResponse(200, 'Order created successfully', new OrderResource($order));
     }
 
     /**

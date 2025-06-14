@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Exception;
@@ -8,46 +9,46 @@ use App\Helpers\ApiResponse;
 use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class OrderService
 {
-
-    public function creatOrderDetailsWithReturnTotalPrice($user,$order)
+    public function __construct(
+        public CartService $cartService,
+        public CouponService $couponService
+    )
     {
-        try {
-            return DB::transaction(function () use ($order,$user) {
-                $carts=$this->validationOfCarts($user);
-                $totalprice=0;
-                foreach ($carts as $cart) {
-                    OrderDetail::create([
-                        'order_id' => $order->id,
-                        'product_id' => $cart->product_id,
-                        'quantity' => $cart->quantity,
-                        'unit_price' => $cart->product->price,
-                        'total_price' => $cart->product->price * $cart->quantity,
-                    ]);
-                    $totalprice += $cart->quantity * $cart->product->price;
-                    $cart->product->decrement('stock_quantity', $cart->quantity);
-                }
-                return $totalprice;
-            });
-
-        }
-        catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-
     }
 
-    public function UpdateOrderDetails($user,$order)
+    public function storeOrderDetails($order)
     {
-        try
-        {
-          return  DB::transaction(function () use ($user,$order) {
-                $this->returnItemsToStock($order);
-                $carts=$this->validationOfCarts($user);
+        DB::transaction(function () use ($order) {
+            $carts = $this->cartService->cartItems();
 
-                $totalprice=0;
+            foreach ($carts as $cart) {
+
+                $unit_price = $cart->product->price - $cart->product->price * $cart->product->discount / 100;
+
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cart->product_id,
+                    'quantity' => $cart->quantity,
+                    'price' => $unit_price,
+                ]);
+
+                $cart->product->decrement('stock_quantity', $cart->quantity);
+            }
+        });
+    }
+
+    public function UpdateOrderDetails($user, $order)
+    {
+        try {
+            return DB::transaction(function () use ($user, $order) {
+                $this->returnItemsToStock($order);
+                $carts = $this->validationOfCarts($user);
+
+                $totalprice = 0;
                 foreach ($carts as $cart) {
                     OrderDetail::where('order_id', $order->id)
                         ->where('product_id', $cart->product_id)
@@ -55,9 +56,8 @@ class OrderService
                             'order_id' => $order->id,
                             'product_id' => $cart->product_id,
                             'quantity' => $cart->quantity,
-                            'unit_price' => $cart->product->price,
-                            'total_price' => $cart->product->price * $cart->quantity,
-                    ]);
+                            'price' => $cart->product->price,
+                        ]);
                     $totalprice += $cart->quantity * $cart->product->price;
                     $cart->product->decrement('stock_quantity', $cart->quantity);
                 }
@@ -65,49 +65,44 @@ class OrderService
 
             });
 
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
 
     private function returnItemsToStock($order): void
     {
-       foreach ($order->orderDetails as $orderDetail) {
-         $orderDetail->product()->increment('stock_quantity', $orderDetail->quantity);
-       }
+        foreach ($order->orderDetails as $orderDetail) {
+            $orderDetail->product()->increment('stock_quantity', $orderDetail->quantity);
+        }
     }
 
-    private function validationOfCarts($user)
-    {
-        $carts=$user->cartItems()->with('product')->get;
-
-        if($carts->isEmpty())
-        {
-            throw new Exception ('you did not add any cart',200);
-        }
-
-        foreach ($carts as $cart) {
-            if ($cart->product->stock_quantity < $cart->quantity) {
-                throw new Exception ( json_encode([
-                    'quantity of products in stock is not enough ',
-                    'data'=>[
-                        'cart_id' => $cart->id,
-                        'requested quantity in cart ' => $cart->quantity,
-                        'available stock quantity' => $cart->product->stock_quantity,
-                        'product_id' => $cart->product_id  ]
-                ]),422);
-            }
-        }
-        return $carts;
-    }
-
-    // admin all orders user all their orders
+    // admin with all orders user with all their orders
     public function orders()
     {
         if (Auth::user()->can('viewAny', Order::class))
             return Order::paginate(15);
 
         return Order::where('user_id', Auth::user()->id)->paginate(15);
+    }
+
+    public function store($request)
+    {
+        return Order::create([
+            'user_id' => Auth::user()->id,
+            'order_date' => now(),
+            'total_price' => $this->total($request),
+            'status' => 'unpaid',
+        ]);
+    }
+
+    // calculate the total considering the discounts and coupons
+    public function total(StoreOrderRequest $request)
+    {
+        return $this->cartService->cartItems()->sum(function ($cart) {
+                return $cart->product->price * $cart->quantity - (int) ($cart->product->price * $cart->quantity * $cart->product->discount / 100);
+            }) - when($request->has('coupon'), function () use ($request) {
+                return $this->couponService->discount($request->coupon);
+            });
     }
 }

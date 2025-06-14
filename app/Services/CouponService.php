@@ -32,8 +32,13 @@ class CouponService
             'discount_amount' => $data['discount_amount'],
             'expires_at' => $data['expires_at'],
         ]);
-        
+
         return $coupon->fresh();
+    }
+
+    public function discount(string $code)
+    {
+        return Coupon::where('code', $code)->pluck('discount_amount')->first();
     }
 
 }
