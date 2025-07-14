@@ -1,10 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 * {
+    font-family: Outfit;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    list-style: none;
 }
 body {
  height: 100vh;
  font-family: "Poppins", sans-serif;
+}
+a hr {
+     height: 0px;
+}
+a.active hr{
+    height: 1.5px;
+    transition: height 0.7s;
+}
+.pointer {
+    cursor: pointer;
+}
+.w-3 {
+    width: 13px;
+}
+.h-3 {
+    height: 13px;
+}
+.w-4 {
+    width: 16px;
+}
+.w-12 {
+  width: 3rem;
+}
+.w-32 {
+  width: 8rem; /* 128px */
+}
+.h-4 {
+    height: 16px;
+}
+.group:hover div.dropdown-menu {
+    display: block !important;
+}
+.black-hover:hover {
+    color: black !important;
+}
+.fs-10 {
+    font-size: 10px;
+}
+.fs-11 {
+    font-size: 11px;
+}
+.fs-8 {
+  font-size: 8px;
+}
+.custom-offset {
+  right: -6px;
+  bottom: -20px;
+}
+.transition-all {
+  transition: width 1s !important;
+}
+.text-414141 {
+    color: #414141;
+}
+.bg-414141 {
+    background-color: #414141;
+}
+.w-8 { width: 32px; }
+
+@media (min-width: 768px) {
+  .w-md-11 {
+    width: 44px;
+  }
+}
+.h-2px {
+  height: 2px;
+}
+
+.h-1px {
+  height: 1px;
+}
+@media (min-width: 640px) {
+  .h-sm-2px {
+    height: 2px;
+  }
+  .w-sm-48px {
+    width: 48px;
+  }
+}
+.prata-regular {
+  font-family: "Prata", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.img-scale:hover {
+    transform: scale(1.5);
+    transition: 1.5s ease-in-out;
+}
+@media (max-width:575px) {
+    a.active {
+        background-color: black;
+        color: white !important;
+    }
+}
+.custom-gap-responsive {
+  gap: 3rem;
+}
+
+@media (min-width: 576px) {
+  .custom-gap-responsive {
+    gap: 0.5rem;
+  }
+}
+@media (min-width: 576px) {
+  .sm-flex-1 {
+    flex: 1 1 0%;
+  }
+}
+.outline-none {
+  outline: none !important;
+}
+.px-10-custom {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+@media (min-width: 768px) {
+  .md-w-66 {
+    width: 66% !important;
+  }
+}
+.mt-30 {
+  margin-top: 7.5rem;
+}
+.mt-40 {
+  margin-top: 10rem;
+}
+@media (min-width: 576px) {
+  .custom-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr;
+  }
+}
+.w-90 {
+    width: 90%;
+}
+@media (min-width: 640px) {
+  .custom-max-w-96 {
+    max-width: 384px;
+  }
+}
+.mt--8px {
+  margin-top: -8px;
 }
