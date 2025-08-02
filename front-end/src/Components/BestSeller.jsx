@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ShopeContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContext';
 import ProductItem from './ProductItem';
 import Title from './Title';
 
 const BestSeller = () => {
-    const {products} = useContext(ShopeContext);
+    const {products} = useContext(ShopContext);
     const [bestSeller, setBestSeller] = useState([]);
 
     useEffect(()=>{
