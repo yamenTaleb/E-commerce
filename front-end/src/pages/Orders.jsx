@@ -47,7 +47,7 @@ const Orders = () => {
                                 <p className="min-w-2 h-2 rounded-circle bg-success"></p>
                                 <p className="small fs-md-6">Ready to ship</p>
                             </div>
-                            <button className="border bg-light px-3 py-2 small font-medium rounded">Track Order</button>
+                            <button className="button text-dark border bg-light px-3 py-2 small font-medium rounded">Track Order</button>
                         </div>
                     </div>
                 ))}

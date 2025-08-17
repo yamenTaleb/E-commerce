@@ -3,13 +3,23 @@ import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../Components/RelatedProducts";
+import { useWishlist } from "../context/WishlistContext";
 
 const Product = () => {
     const { productId } = useParams();
-    const { products, currency,addToCart } = useContext(ShopContext);
+    const { products, currency, addToCart } = useContext(ShopContext);
+    const { addToWishlist, removeFromWishlist, isItemInWishlist } =
+        useWishlist();
     const [productData, setProductData] = useState(false);
     const [image, setImage] = useState("");
     const [size, setSize] = useState("");
+    const handleWishlistToggle = () => {
+        if (isItemInWishlist(productData._id)) {
+            removeFromWishlist(productData._id);
+        } else {
+            addToWishlist(productData._id);
+        }
+    };
 
     const fetchProductData = async () => {
         products.map((item) => {
@@ -74,7 +84,7 @@ const Product = () => {
                             {productData.sizes.map((item, index) => (
                                 <button
                                     onClick={() => setSize(item)}
-                                    className={`border py-2 px-4 bg-light ${
+                                    className={`button-size border py-2 px-4  ${
                                         item === size ? "border-orange-500" : ""
                                     }`}
                                     key={index}
@@ -85,8 +95,24 @@ const Product = () => {
                         </div>
                     </div>
 
-                    <button onClick={()=>addToCart(productData._id,size)} className="border-0 bg-black text-white px-4 py-3 small bg-gray-700">ADD TO CART</button>
-                    <hr className="mt-4 col-sm-10"/>
+                    <button
+                        onClick={() => addToCart(productData._id, size)}
+                        className="button border-0 bg-black text-white px-4 py-3 small bg-gray-700"
+                    >
+                        ADD TO CART
+                    </button>
+                    <button
+                        onClick={handleWishlistToggle}
+                        className="btn btn-outline-danger ms-2"
+                    >
+                        {isItemInWishlist(productData._id) ? (
+                            <i className="bi bi-heart-fill"></i> // أيقونة قلب ممتلئة إذا كان في قائمة الأمنيات
+                        ) : (
+                            <i className="bi bi-heart"></i> // أيقونة قلب فارغة إذا لم يكن في قائمة الأمنيات
+                        )}
+                    </button>
+
+                    <hr className="mt-4 col-sm-10" />
                     <div className="small text-secondary mt-5 d-flex flex-column gap-1">
                         <p>100% Original product.</p>
                         <p>Cash on delivery is available on this product.</p>
@@ -102,20 +128,36 @@ const Product = () => {
                 </div>
                 <div className="d-flex flex-column gap-3 border px-4 py-3 small text-secondary">
                     <p>
-                        An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.
+                        An e-commerce website is an online platform that
+                        facilitates the buying and selling of products or
+                        services over the internet. It serves as a virtual
+                        marketplace where businesses and individuals can
+                        showcase their products, interact with customers, and
+                        conduct transactions without the need for a physical
+                        presence. E-commerce websites have gained immense
+                        popularity due to their convenience, accessibility, and
+                        the global reach they offer.
                     </p>
                     <p>
-                        E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.
+                        E-commerce websites typically display products or
+                        services along with detailed descriptions, images,
+                        prices, and any available variations (e.g., sizes,
+                        colors). Each product usually has its own dedicated page
+                        with relevant information.
                     </p>
                 </div>
             </div>
 
             {/* ------display related products------- */}
 
-            <RelatedProducts category={productData.category} subCategory={productData.subCategory}/>
+            <RelatedProducts
+                category={productData.category}
+                subCategory={productData.subCategory}
+            />
         </div>
-    ) : <div className="opacity-0"></div>
-
+    ) : (
+        <div className="opacity-0"></div>
+    );
 };
 
 export default Product;

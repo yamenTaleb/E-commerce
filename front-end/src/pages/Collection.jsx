@@ -118,10 +118,10 @@ const Collection = () => {
             <div className='d-flex justify-content-between text-base sm-text-2xl mb-4'>
                 <Title text1={'ALL'} text2={'COLLECTIONS'}/>
                 {/* product sort*/}
-                <select onChange={(e)=>setSortType(e.target.value)} className='border border-2 border-gray-300 bg-white fs-6 px-2'>
-                    <option value="relavent">Sort by: Relavent</option>
-                    <option value="low-high">Sort by: Low to High</option>
-                    <option value="high-low">Sort by: High to low</option>
+                <select onChange={(e)=>setSortType(e.target.value)} className='border border-2 border-gray-300 bg-white fs-6 px-2 button text-dark'>
+                    <option  value="relavent">Sort by: Relavent</option>
+                    <option  value="low-high">Sort by: Low to High</option>
+                    <option  value="high-low">Sort by: High to low</option>
                 </select>
             </div>
 

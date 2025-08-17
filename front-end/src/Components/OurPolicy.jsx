@@ -6,7 +6,7 @@ const OurPolicy = () => {
 
     <div className='d-flex flex-column flex-sm-row custom-gap-responsive justify-content-around py-5 small text-secondary fs-6 fs-md-5 text-center'>
         <div style={{fontSize:'12px'}}>
-            <img src={assets.exchange_icon} className='w-12 m-auto mb-3'  alt="" />
+            <img src={assets.exchange_icon} className='w-12 m-auto mb-3 exchange-icon'  alt="" />
             <p className='fw-semibold text-black'>Easy Exchange Policy</p>
             <p className='text-muted'>We offer hassle free exchange policy</p>
         </div>
@@ -16,7 +16,7 @@ const OurPolicy = () => {
             <p className='text-muted'>We provide 7 days free return policy</p>
         </div>
         <div style={{fontSize:'12px'}}>
-            <img src={assets.support_img} className='w-12 m-auto mb-3'  alt="" />
+            <img src={assets.support_img} className='w-12 m-auto mb-3 support-img'  alt="" />
             <p className='fw-semibold text-black'>Best customer support</p>
             <p className='text-muted'>we provide 24/7 customer suppor</p>
         </div>

@@ -7,6 +7,7 @@
     box-sizing: border-box;
     list-style: none;
 }
+
 body {
  height: 100vh;
  font-family: "Poppins", sans-serif;
@@ -326,13 +327,13 @@ a.active hr{
   }
 }
 .max-w-10 {
-  max-width: 2.5rem; /* القيمة الافتراضية */
+  max-width: 2.5rem;
 }
 
 @media (min-width: 576px) { /* sm في Bootstrap */
   .sm-max-w-20 {
-    max-width: 5rem; /* القيمة الجديدة على sm وما فوق */
-  }
+    max-width: 5rem;
+}
 }
 @media (min-width: 576px) {
   .sm-w-5 {
@@ -404,4 +405,70 @@ a.active hr{
 }
 .transition-all {
   transition: all 0.5s !important;
+}
+:root {
+  --background-color: #ffffff;
+  --primary-color: #f700ff;
+  --secondary-color: #0a1d2e;
+}
+[data-theme="dark"] {
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --primary-color: #ff66d9;
+  --secondary-color: #adb5bd;
+  color: var(--text-color) !important;
+  .text-secondary {
+    color: var(--text-color) !important;
+  }
+  .bg-secondary {
+    background-color: var(--text-color) !important;
+  }
+  .text-muted {
+    color: var(--secondary-color) !important; /* للنصوص الخافتة،     */
+  }
+  .text-dark {
+    color: var(--text-color) !important; /* للنصوص الداكنة،   */
+  }
+  .text-black {
+    color: var(--text-color) !important; /* للنصوص السوداء،   */
+  }
+  .hr-active {
+    background-color: white !important;
+  }
+  .button-size {
+    color: var(--background-color) !important;
+  }
+  .cart-icon,
+  .search-icon,
+  .profile-icon,
+  .logo-icon,
+  .bin-icon,
+  .cart-count,
+  .button,
+  .support-img,
+  .exchange-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+ /* الخلفيات */
+  .bg-light {
+    background-color: var(--background-color) !important;
+  }
+  .bg-white {
+    background-color: var(--background-color) !important;
+  }
+  /* ألوان النص */
+  .text-dark {
+    color: var(--text-color) !important;
+  }
+  .text-black {
+    color: var(--text-color) !important;
+  }
+  /* ألوان الحدود */
+  .border {
+    border-color: var(--secondary-color) !important;
+  }
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }

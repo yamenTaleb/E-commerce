@@ -82,7 +82,7 @@ const Cart = () => {
                                 onClick={() => {
                                     updateQuantity(item._id, item.size, 0);
                                 }}
-                                className="w-4 me-4 sm-w-5 pointer"
+                                className="w-4 me-4 sm-w-5 pointer bin-icon"
                                 src={assets.bin_icon}
                                 alt=""
                             />
@@ -95,7 +95,7 @@ const Cart = () => {
                 <div className="sm-w-450">
                     <CartTotal />
                     <div className="w-100 text-end">
-                        <button onClick={()=>navigate('/place-order')} className="bg-black border-0 text-white fs-6 my-5 px-4 py-3">
+                        <button onClick={()=>navigate('/place-order')} className="bg-black border-0 text-white fs-6 my-5 px-4 py-3 button">
                             PROCEED TO CHECKOUT
                         </button>
                     </div>

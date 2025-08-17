@@ -5,7 +5,7 @@ const Hero = () => {
     <div className='d-flex flex-column flex-sm-row border border-secondary'>
         {/* Hero Left Side */}
         <div className='w-100 w-sm-50 d-flex align-items-center justify-content-center py-5 py-sm-0'>
-            <div className='text-414141'>
+            <div className=''>
                 <div className="d-flex align-items-center gap-2">
                     <p className='w-8 w-md-11 h-2px bg-414141'></p>
                     <p className='fw-semibold fs-6 fs-md-5'>OUR BESTSELLERS</p>
