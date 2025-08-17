@@ -11,6 +11,14 @@ body {
  height: 100vh;
  font-family: "Poppins", sans-serif;
 }
+.prata-regular {
+  font-family: "Prata", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+::-webkit-scrollbar {
+    display: none;
+}
 a hr {
      height: 0px;
 }
@@ -30,8 +38,16 @@ a.active hr{
 .w-12 {
   width: 3rem;
 }
+.w-16 {
+    width: 4rem;
+}
 .w-32 {
   width: 8rem; /* 128px */
+}
+@media (min-width: 576px) { /* sm */
+  .sm-w-20 {
+    width: 5rem; /* sm:w-20 */
+  }
 }
 .h-4 {
     height: 16px;
@@ -84,6 +100,12 @@ a.active hr{
 .h-1px {
   height: 1px;
 }
+.h-2 {
+  height: 0.5rem !important;
+}
+.min-w-2 {
+  min-width: 0.5rem !important;
+}
 @media (min-width: 640px) {
   .h-sm-2px {
     height: 2px;
@@ -91,11 +113,6 @@ a.active hr{
   .w-sm-48px {
     width: 48px;
   }
-}
-.prata-regular {
-  font-family: "Prata", serif;
-  font-weight: 400;
-  font-style: normal;
 }
 .img-scale:hover {
     transform: scale(1.5);
@@ -157,7 +174,7 @@ a.active hr{
   margin-top: -8px;
 }
 .fw-medium {
-  font-weight: 500;
+  font-weight: 500 !important;
 }
 .text-base {
   font-size: 1rem; /* text-base */
@@ -206,9 +223,185 @@ a.active hr{
     width: 50%;
   }
 }
+@media (min-width: 768px) {
+    .md-w-50 {
+        width: 50%;
+    }
+}
 .bg-inherit {
   background-color: inherit;
 }
 .no-outline {
   outline: none;
+}
+.border-top-2 {
+    border-top-width: 2px !important;
+  }
+.transition-opacity-ease-in {
+    transition-property: opacity !important;
+    transition-timing-function: ease-in !important;
+    transition-duration: 500ms !important;
+  }
+.flex-column-reverse {
+  flex-direction: column-reverse;
+}
+.overflow-x-auto {
+  overflow-x: auto;
+}
+@media (min-width: 576px) {
+  .sm-overflow-y-scroll {
+    overflow-y: scroll;
+  }
+}
+@media (min-width: 576px) {
+  .sm-justify-normal {
+    justify-content: normal !important;
+  }
+}
+@media (min-width: 576px) {
+  .sm-w-18-7 {
+    width: 18.7% !important;
+  }
+}
+.w-24p {
+  width: 24% !important;
+}
+@media (min-width: 576px) {
+  .sm-w-100 {
+    width: 100% !important;
+  }
+}
+@media (min-width: 576px) {
+  .sm-w-80p {
+    width: 80% !important;
+  }
+}
+.mt-20px {
+    margin-top: 20px !important;
+}
+@media (min-width: 768px) {
+  .w-4-5 {
+    width: 80%;
+  }
+}
+.border-orange-500 {
+  border-color: #f97316 !important;
+}
+.bg-gray-700:active {
+  background-color: #374151 !important;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: 4fr 0.5fr; /* الافتراضي = مثل Tailwind */
+  gap: 1rem;                        /* gap-4 */
+  align-items: center;              /* items-center */
+}
+
+@media (min-width: 576px) { /* sm */
+  .product-grid {
+    grid-template-columns: 4fr 2fr 0.5fr;
+  }
+}
+.custom-text {
+  font-size: 0.75rem;   /* text-xs */
+}
+
+@media (min-width: 576px) { /* sm */
+  .custom-text {
+    font-size: 1.125rem; /* sm:text-lg */
+  }
+}
+.sm-px-3 {
+  /* sm:px-3 */
+  @media (min-width: 576px) {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+.sm-py-1 {
+  /* sm:py-1 */
+  @media (min-width: 576px) {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+}
+.max-w-10 {
+  max-width: 2.5rem; /* القيمة الافتراضية */
+}
+
+@media (min-width: 576px) { /* sm في Bootstrap */
+  .sm-max-w-20 {
+    max-width: 5rem; /* القيمة الجديدة على sm وما فوق */
+  }
+}
+@media (min-width: 576px) {
+  .sm-w-5 {
+    width: 1.25rem;
+  }
+}
+.my-20 {
+  margin-top: 5rem !important;
+  margin-bottom: 5rem !important;
+}
+
+@media (min-width: 576px) {
+    .sm-w-450 {
+        width: 450px;
+    }
+}
+.min-h-80vh {
+  min-height: 80vh !important;
+}
+.min-w-80vh {
+  min-width: 80vh !important;
+}
+@media (min-width: 576px) { /* sm breakpoint */
+  .max-w-sm-400 {
+    max-width: 400px !important;
+  }
+}
+@media (min-width: 768px) { /* md breakpoint */
+  .max-w-md-400 {
+    max-width: 400px !important;
+  }
+}
+.min-w-3-5 {
+  min-width: 0.875rem !important;
+}
+.h-3-5 {
+  min-height: 0.875rem !important;
+}
+@media (min-width: 768px) {
+    .md-max-w-450 {
+        max-width: 450px;
+    }
+}
+.px-10 {
+  padding-left: 2.5rem !important;
+  padding-right: 2.5rem !important;
+}
+@media (min-width: 768px) {
+  .px-md-16 {
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+  }
+}
+.py-8 {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+@media (min-width: 576px) {
+  .py-sm-20 {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+  }
+}
+.hover-bg-black:hover {
+  background-color: #000 !important;
+}
+.hover-text-white:hover {
+  color: #fff !important;
+}
+.transition-all {
+  transition: all 0.5s !important;
 }
