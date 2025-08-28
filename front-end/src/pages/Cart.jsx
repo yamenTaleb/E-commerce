@@ -5,8 +5,14 @@ import { assets } from "../assets/assets";
 import CartTotal from "../context/CartTotal";
 
 const Cart = () => {
-    const { products, currency, cartItems, updateQuantity, navigate } =
-        useContext(ShopContext);
+    const {
+        products,
+        currency,
+        cartItems,
+        updateQuantity,
+        navigate,
+        removeFromCart
+    } = useContext(ShopContext);
 
     const [cartData, seCartData] = useState([]);
 
@@ -38,7 +44,7 @@ const Cart = () => {
                     );
                     return (
                         <div
-                            key={index}
+                            key={item._id + item.size}
                             className="py-3 border-top border-bottom text-secondary product-grid items-center gap-4"
                         >
                             <div className="d-flex align-items-start gap-4">
@@ -80,9 +86,9 @@ const Cart = () => {
                             />
                             <img
                                 onClick={() => {
-                                    updateQuantity(item._id, item.size, 0);
+                                    removeFromCart(item._id, item.size);
                                 }}
-                                className="w-4 me-4 sm-w-5 pointer bin-icon"
+                                className="w-4 me-4 sm-w-5 pointer"
                                 src={assets.bin_icon}
                                 alt=""
                             />
@@ -95,7 +101,10 @@ const Cart = () => {
                 <div className="sm-w-450">
                     <CartTotal />
                     <div className="w-100 text-end">
-                        <button onClick={()=>navigate('/place-order')} className="bg-black border-0 text-white fs-6 my-5 px-4 py-3 button">
+                        <button
+                            onClick={() => navigate("/place-order")}
+                            className="bg-black border-0 text-white fs-6 my-5 px-4 py-3 button"
+                        >
                             PROCEED TO CHECKOUT
                         </button>
                     </div>

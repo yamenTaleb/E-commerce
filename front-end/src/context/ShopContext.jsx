@@ -2,7 +2,9 @@ import { createContext, useEffect, useState } from "react";
 import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
 export const ShopContext = createContext();
+
 const ShopeContextProvider = (props)=> {
 
     const currency = '$';
@@ -35,8 +37,6 @@ const ShopeContextProvider = (props)=> {
         setCartItems(cartData);
     }
 
-
-
     const getCartCount = () =>{
         let totalCount = 0;
         for(const items in cartItems) {
@@ -53,10 +53,34 @@ const ShopeContextProvider = (props)=> {
         return totalCount;
     }
 
-    const updateQuantity = async(itemId,size,quantity)=> {
+    // دالة تحديث الكمية المعدلة
+    const updateQuantity = async(itemId, size, quantity) => {
         let cartData = structuredClone(cartItems);
-        cartData[itemId][size]= quantity;
+        if (quantity <= 0) {
+            // إذا كانت الكمية صفر أو أقل، احذفي هذا الحجم من المنتج
+            if (cartData[itemId] && cartData[itemId][size]) {
+                delete cartData[itemId][size];
+                // إذا لم يتبق أي أحجام لهذا المنتج، احذفي المنتج نفسه
+                if (Object.keys(cartData[itemId]).length === 0) {
+                    delete cartData[itemId];
+                }
+            }
+        } else {
+            // وإلا، حدثي الكمية
+            if (cartData[itemId]) {
+                cartData[itemId][size] = quantity;
+            } else {
+                // هذا السيناريو لا ينبغي أن يحدث إذا كان العنصر موجوداً بالفعل
+                // ولكن لضمان السلامة، إذا لم يكن المنتج موجوداً، أنشئيه
+                cartData[itemId] = { [size]: quantity };
+            }
+        }
         setCartItems(cartData);
+    }
+
+    // دالة removeFromCart الجديدة
+    const removeFromCart = (itemId, size) => {
+        updateQuantity(itemId, size, 0); // استخدمي دالة updateQuantity لإزالة العنصر
     }
 
     const getCartAmount = () => {
@@ -81,7 +105,7 @@ const ShopeContextProvider = (props)=> {
         products,currency,delivery_fee,
         search,setSearch,showSearch,setShowSearch,
         cartItems,addToCart,
-        getCartCount,updateQuantity,
+        getCartCount,updateQuantity,removeFromCart, // تأكدي من إضافة removeFromCart هنا
         getCartAmount, navigate
     }
 
