@@ -45,7 +45,7 @@ class WishListPolicy
      */
     public function delete(User $user, WishList $wishList): bool
     {
-        return true;
+        return $wishList->user_id === $user->id;
     }
 
     /**

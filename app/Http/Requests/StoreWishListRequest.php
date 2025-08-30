@@ -9,9 +9,11 @@ class StoreWishListRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    protected function prepareForValidation()
     {
-        return false;
+        return $this->merge([
+            'user_id' => auth()->user()->id
+        ]);
     }
 
     /**
@@ -22,7 +24,8 @@ class StoreWishListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'comment' => 'string|max:2048|nullable',
+            'product_id' => 'required|integer|exists:products,id|unique:wish_lists,id,product_id',
         ];
     }
 }
