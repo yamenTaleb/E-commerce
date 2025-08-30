@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -39,7 +40,7 @@ Route::delete('/cart/destroy', [CartController::class, 'destroy'])->name('cart.d
 
 Route::apiResource('/categories', CategoryController::class);
 
-Route::post('/payments/checkout', [PaymentController::class, 'checkout'])->name('payments.checkout');
+
 Route::get('/payments/success', [PaymentController::class, 'success'])->name('payments.success');
 Route::get('/payments/cancel', [PaymentController::class, 'cancel'])->name('payments.cancel');
 Route::post('/payments/webhook', [PaymentController::class, 'webhook'])->name('payments.webhook');
@@ -48,5 +49,11 @@ Route::apiResource('/orders', OrderController::class);
 Route::apiResource('/order_details', OrderDetailController::class)->only('index', 'show');
 
 Route::apiResource('/coupons', CouponController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/wishlist', WishListController::class)->parameters([
+    'wishlist' => 'wishList'
+    ]);
+    Route::post('/payments/checkout', [PaymentController::class, 'checkout'])->name('payments.checkout');
+});
 
 require __DIR__.'/auth.php';

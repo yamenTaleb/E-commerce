@@ -57,6 +57,7 @@ class OrderService
             'user_id' => Auth::user()->id,
             'order_date' => now(),
             'total_price' => $this->total($request),
+            'session_id' => $request->session_id ?? null,
             'status' => 'unpaid',
         ]);
     }

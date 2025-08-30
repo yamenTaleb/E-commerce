@@ -85,6 +85,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        dd($order);
         Gate::authorize('delete', Order::class);
 
         $order->delete();
