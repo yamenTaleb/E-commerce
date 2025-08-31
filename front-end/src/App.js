@@ -15,6 +15,7 @@ import Footer from './Components/Footer';
 import SearchBar from './Components/SearchBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
      const { theme } = useTheme();
   return (
